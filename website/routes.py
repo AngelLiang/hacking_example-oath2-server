@@ -51,7 +51,7 @@ def create_client():
         return redirect('/')
     if request.method == 'GET':
         return render_template('create_client.html')
-    
+
     # POST
     client = OAuth2Client(**request.form.to_dict(flat=True))
     client.user_id = user.id

@@ -12,6 +12,8 @@ from .models import OAuth2Client, OAuth2AuthorizationCode, OAuth2Token
 
 
 class AuthorizationCodeGrant(grants.AuthorizationCodeGrant):
+    """认证码授权"""
+
     def create_authorization_code(self, client, user, request):
         """创建认证码"""
         code = gen_salt(48)
@@ -44,6 +46,8 @@ class AuthorizationCodeGrant(grants.AuthorizationCodeGrant):
 
 
 class PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
+    """密码授权"""
+
     def authenticate_user(self, username, password):
         """认证用户"""
         user = User.query.filter_by(username=username).first()
@@ -52,6 +56,8 @@ class PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
 
 
 class RefreshTokenGrant(grants.RefreshTokenGrant):
+    """Refresh Token授权"""
+
     def authenticate_refresh_token(self, refresh_token):
         """认证refresh token"""
         item = OAuth2Token.query.filter_by(refresh_token=refresh_token).first()
@@ -68,6 +74,7 @@ require_oauth = ResourceProtector()
 
 
 def config_oauth(app):
+    """OAuth配置app"""
     query_client = create_query_client_func(db.session, OAuth2Client)
     save_token = create_save_token_func(db.session, OAuth2Token)
     authorization.init_app(
